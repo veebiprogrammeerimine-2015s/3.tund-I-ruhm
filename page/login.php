@@ -36,6 +36,12 @@
                 $password = test_input($_POST["password"]);
             }
             
+            if($password_error == "" && $email_error == ""){
+                // erroreid ei olnud
+                echo "Kontrollin ".$email." ".$password;
+                
+            }
+            
             
         } elseif(isset($_POST["create"])){
             
