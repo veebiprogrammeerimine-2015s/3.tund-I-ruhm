@@ -34,6 +34,14 @@
     }
 
 ?>
+<?php 
+    // lehe nimi
+    $page_title = "Login leht";
+    
+    // faili nimi
+    $page_file_name = "login.php";
+    
+?>
 <?php require_once("../header.php"); ?>  
     
     <h2>Login</h2>
