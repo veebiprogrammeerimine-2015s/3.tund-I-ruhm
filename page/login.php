@@ -2,35 +2,54 @@
 
     // user_form.php
     
-    // jutumärkide vahele input elemendi NAME
-    //echo $_POST["email"];
-    //echo $_POST["password"];
-    
+    // ERRORid
     $email_error = "";
     $password_error = "";
     
+    $name_error = "";
+    
+    // Muutujad väärtustega
+    $email = "";
+    $password = "";
+    
+    
     // kontrolli ainult siis kui kasutaja vajutab logi sisse nuppu
     if($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-        //Kontrollime kasutaja e-posti, et see ei ole tühi
-        if(empty($_POST["email"])) {
-            $email_error = "Ei saa olle tühi";
-        }
         
-        // Kontrollime parooli
-        if(empty($_POST["password"])) {
-            $password_error = "Ei saa olle tühi";
-        } else {
+        // kontrollin kas muutuja $_POST["login"], ehk login nupp
+        if(isset($_POST["login"])){
             
-            // paroool ei tühi, kontrollime pikkust
-            if(strlen($_POST["password"]) < 8 ){
+            //Kontrollime kasutaja e-posti, et see ei ole tühi
+            if(empty($_POST["email"])) {
+                $email_error = "Ei saa olle tühi";
+            } else {
                 
-                $password_error = "Peab olema vähemalt 8 sümbolit pikk";
+                // annan väärtuse
+                $email = test_input($_POST["email"]);
                 
             }
             
+            // Kontrollime parooli
+            if(empty($_POST["password"])) {
+                $password_error = "Ei saa olle tühi";
+            } else {
+                $password = test_input($_POST["password"]);
+            }
+            
+            
+        } elseif(isset($_POST["create"])){
+            
+            // siin kontrollida create vormi väljasid
+            
         }
         
+    }
+    
+    function test_input($data) {
+      $data = trim($data);
+      $data = stripslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
     }
 
 ?>
@@ -45,13 +64,17 @@
 <?php require_once("../header.php"); ?>  
     
     <h2>Login</h2>
-    <form action="user_form.php" method="post">
-        <input name="email" type="email" placeholder="E-post" >* <?php echo $email_error; ?> <br><br>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <input name="email" type="email" placeholder="E-post" value="<?php echo $email; ?>" >* <?php echo $email_error; ?> <br><br>
         <input name="password" type="password" placeholder="Parool" >* <?php echo $password_error; ?><br><br>
         
-        <input type ="submit" value="Logi sisse">
+        <input name="login" type ="submit" value="Logi sisse">
     </form>
     
     <h2>Create user</h2>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <input name="name" type="text" placeholder="Nimi" >* <?php echo $name_error; ?> <br><br>
+        <input name="create" type ="submit" value="Create user">
+    </form>
         
 <?php require_once("../footer.php"); ?>  
